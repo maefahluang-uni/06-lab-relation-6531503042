@@ -6,5 +6,5 @@ import org.springframework.data.repository.CrudRepository;
 
 import th.mfu.domain.Seat;
 
-public interface SeatRepository {
+public interface SeatRepository extends CrudRepository<Seat,Long> {
 }

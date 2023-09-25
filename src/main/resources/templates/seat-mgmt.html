@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,13 +8,37 @@
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    <div class="container mt-5">
-        <a class="btn btn-secondary mb-3" th:href="@{/concerts/}">Back to Concert List</a>
-        <h1>Seat Management</h1>
-        <ul class="list-group">
-            <!--TODO: add <li> and iterate to listing all seats -->
-        </ul>
-        <!--TODO: create form for adding a new seat -->
-    </div>
+<div class="container mt-5">
+    <a class="btn btn-secondary mb-3" th:href="@{/concerts/}">Back to Concert List</a>
+    <h1>Seat Management</h1>
+    <ul class="list-group">
+        <!-- Iterate through the list of seats -->
+        <li class="list-group-item" th:each="seat : ${seats}">
+            Seat Number: <span th:text="${seat.number}"></span><br>
+            Zone: <span th:text="${seat.zone}"></span><br>
+            Booked: <span th:text="${seat.booked ? 'Yes' : 'No'}"></span>
+        </li>
+    </ul>
+    <!-- Create a form for adding a new seat -->
+    <form th:action="@{/concert/{id}/seat(id=${concert.id})}" method="post">
+        <h2>Add a New Seat</h2>
+        <div class="form-group">
+            <label for="number">Seat Number</label>
+            <input type="text" class="form-control" id="number" name="number" required>
+        </div>
+        <div class="form-group">
+            <label for="zone">Zone</label>
+            <input type="text" class="form-control" id="zone" name="zone" required>
+        </div>
+        <div class="form-group">
+            <label for="booked">Booked</label>
+            <select class="form-control" id="booked" name="booked" required>
+                <option value="true">Yes</option>
+                <option value="false">No</option>
+            </select>
+        </div>
+        <input type="submit" class="btn btn-primary" value="Add Seat">
+    </form>
+</div>
 </body>
 </html>

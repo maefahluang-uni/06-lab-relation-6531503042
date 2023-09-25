@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import th.mfu.domain.Concert;
+import th.mfu.domain.Performer;
 import th.mfu.domain.Seat;
 
 @Controller
@@ -29,11 +30,16 @@ public class ConcertController {
     // TODO: define repository for concert with @Autowired
 
     ConcertRepository concertRepo;
-
-     // TODO: define repository for concert with @Autowired
     SeatRepository seatRepo;
 
+     // TODO: define repository for concert with @Autowired
+    @Autowired
+    private ConcertRepository concertRepository;
 
+    @Autowired
+    private SeatRepository seatRepository;
+
+    //Constructor for Controller
     public ConcertController(ConcertRepository repository, SeatRepository seatRepository) {
         this.concertRepo = repository;
         this.seatRepo = seatRepository;
@@ -64,33 +70,46 @@ public class ConcertController {
     }
 
     //TODO: add @Transactional
+    @Transactional
+    @GetMapping("/delete-concert/{id}")
     public String deleteConcert(@PathVariable long id) {
         //TODO: delete related seats
+        concertRepository.deleteById(id);
         //TODO: delete concert from DB
+        concertRepository.deleteById(id);
         //TODO: redirect to /concerts list concerts
-        return "";
+        return "redirect:/concerts";
     }
 
+    @GetMapping("concert/{id}/concert")
     public String showAddSeatForm(Model model, @PathVariable Long id) {
 
         //TODO: find seats by concert id
+        Seat seats = seatRepository.findById(id).get();
         //TODO: add found seats to model
+        model.addAttribute("seats", seatRepository.findById(id));
         //TODO: find concert by id
+        Concert concert = concertRepository.findById(id).get();
         //TODO: define an empty seat
+        Seat emptySeat = new Seat();
         //TODO: set concert to the empty seat
+        emptySeat.setNumber("Enter number");
+        emptySeat.setZone("Enter Zone");
         //TODO: add newseat to the model
+        model.addAttribute("emptySeat",emptySeat);
         //TODO: return a template for seat-mgmt
-        return "";
+        return "seat-mgmt";
     }
 
-    
+    @PostMapping("/concert/{id}/seat")
     public String saveSeat(@ModelAttribute Seat newseat, @PathVariable Long id) {
         //TODO: find concert by id
+        Concert concert = concertRepository.findById(id).get();
         //TODO: set concert to the new seat
+        Seat seats = new Seat(newseat.getNumber(), newseat.getZone(), newseat.isBooked());
         //TODO: save new seat
+        seatRepository.save(seats);
         //TODO: redict to /concerts/id/seats where id is concert id
-        return "";
+        return "redirect:/concerts";
     }
-
-
 }
