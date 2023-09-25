@@ -5,7 +5,7 @@ import javax.persistence.*;
 
 
 @Entity
-@Table(name = "table")
+@Table(name = "seat")
 public class Seat {
 
 
@@ -21,7 +21,6 @@ public class Seat {
     private String number;
     private String zone;
     private boolean booked;
-    private Concert concert;
 
 
     public Seat(String string, String string2, boolean b, Concert concert2) {
@@ -34,7 +33,7 @@ public class Seat {
 
     //TODO: add many-to-one relationship to concert with cascade type CascadeType.MERGE
     @ManyToOne(cascade = CascadeType.MERGE)
-    private Seat seat;
+    private Concert concert;
 
     public Seat() {
         //Default Constructor
@@ -74,6 +73,11 @@ public class Seat {
         this.booked = booked;
     }
 
-    public void setConcert(Concert concert2) {
+    public Concert getConcert() {
+        return concert;
+    }
+
+    public void setConcert(Concert concert) {
+        this.concert = concert;
     }
 }

@@ -73,8 +73,9 @@ public class ConcertController {
     @Transactional
     @GetMapping("/delete-concert/{id}")
     public String deleteConcert(@PathVariable long id) {
+        Concert concert = concertRepo.findById(id).get();
         // TODO: delete related seats
-        concertRepository.deleteById(id);
+        seatRepo.deleteByConcertId(id);
         // TODO: delete concert from DB
         concertRepository.deleteById(id);
         // TODO: redirect to /concerts list concerts
@@ -91,12 +92,11 @@ public class ConcertController {
         //TODO: find concert by id
         Concert concert = concertRepository.findById(id).get();
         //TODO: define an empty seat
-        Seat emptySeat = new Seat();
+        Seat newseat = new Seat();
         //TODO: set concert to the empty seat
-        emptySeat.setNumber("Enter number");
-        emptySeat.setZone("Enter Zone");
+        newseat.setConcert(concert);
         //TODO: add newseat to the model
-        model.addAttribute("emptySeat",emptySeat);
+        model.addAttribute("newseat", newseat);
         //TODO: return a template for seat-mgmt
         return "seat-mgmt";
     }
@@ -106,9 +106,9 @@ public class ConcertController {
         // TODO: find concert by id
         Concert concert = concertRepository.findById(id).get();
         // TODO: set concert to the new seat
-        Seat seat = new Seat(newseat.getNumber(), newseat.getZone(), newseat.isBooked(), concert);
+        newseat.setConcert(concert);
         // TODO: save new seat
-        seatRepository.save(seat);
+        seatRepository.save(newseat);
         // TODO: redict to /concerts/id/seats where id is concert id
         return "redirect:/concerts";
     }
