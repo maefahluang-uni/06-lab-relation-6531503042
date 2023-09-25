@@ -45,6 +45,7 @@ public class ConcertController {
         this.seatRepo = seatRepository;
     }
 
+
     @InitBinder
     public final void initBinderUsuariosFormValidator(final WebDataBinder binder, final Locale locale) {
         final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", locale);
@@ -73,13 +74,16 @@ public class ConcertController {
     @Transactional
     @GetMapping("/delete-concert/{id}")
     public String deleteConcert(@PathVariable long id) {
-        //TODO: delete related seats
+        // Delete related seats by concert ID if they exist
+        seatRepository.deleteByConcertId(id);
+
+        // Delete concert from DB
         concertRepository.deleteById(id);
-        //TODO: delete concert from DB
-        concertRepository.deleteById(id);
-        //TODO: redirect to /concerts list concerts
-        return "redirect:/concerts";
-    }
+
+    // Redirect to /concerts list concerts
+    return "redirect:/concerts";
+}
+
 
     @GetMapping("concert/{id}/concert")
     public String showAddSeatForm(Model model, @PathVariable Long id) {
@@ -103,13 +107,20 @@ public class ConcertController {
 
     @PostMapping("/concert/{id}/seat")
     public String saveSeat(@ModelAttribute Seat newseat, @PathVariable Long id) {
-        //TODO: find concert by id
-        Concert concert = concertRepository.findById(id).get();
-        //TODO: set concert to the new seat
-        Seat seats = new Seat(newseat.getNumber(), newseat.getZone(), newseat.isBooked());
-        //TODO: save new seat
-        seatRepository.save(seats);
-        //TODO: redict to /concerts/id/seats where id is concert id
-        return "redirect:/concerts";
-    }
+    // Find concert by id
+    Concert concert = concertRepository.findById(id).get();
+
+    // Create a new seat with the provided data and the associated concert
+    Seat seat = new Seat();
+    seat.setNumber(newseat.getNumber());
+    seat.setZone(newseat.getZone());
+    seat.setBooked(newseat.isBooked());
+    seat.setConcert(concert);
+
+    // Save new seat
+    seatRepository.save(seat);
+
+    // Redirect to /concerts/{id}/seats where {id} is concert id
+    return "redirect:/concerts/" + id + "/seats";
+}
 }

@@ -21,12 +21,14 @@ public class Seat {
     private String number;
     private String zone;
     private boolean booked;
+    private Concert concert;
 
 
-    public Seat(String number, String zone, boolean booked) {
+    public Seat(String number, String zone, boolean booked, Concert concert) {
         this.number = number;
         this.zone = zone;
         this.booked = booked;
+        this.concert = concert;
     }
 
 
@@ -70,5 +72,8 @@ public class Seat {
 
     public void setBooked(boolean booked) {
         this.booked = booked;
+    }
+
+    public void setConcert(Concert concert2) {
     }
 }
