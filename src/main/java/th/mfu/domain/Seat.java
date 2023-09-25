@@ -24,7 +24,7 @@ public class Seat {
     private Concert concert;
 
 
-    public Seat(String number, String zone, boolean booked, Concert concert) {
+    public Seat(String string, String string2, boolean b, Concert concert2) {
         this.number = number;
         this.zone = zone;
         this.booked = booked;
