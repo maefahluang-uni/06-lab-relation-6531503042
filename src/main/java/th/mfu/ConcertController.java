@@ -86,7 +86,7 @@ public class ConcertController {
     public String showAddSeatForm(Model model, @PathVariable Long id) {
 
         //TODO: find seats by concert id
-        Seat seats = seatRepository.findById(id).get();
+        Seat seats = seatRepo.findById(id).get();
         //TODO: add found seats to model
         model.addAttribute("seats", seatRepository.findById(id));
         //TODO: find concert by id
@@ -108,7 +108,7 @@ public class ConcertController {
         // TODO: set concert to the new seat
         newseat.setConcert(concert);
         // TODO: save new seat
-        seatRepository.save(newseat);
+        seatRepo.save(newseat);
         // TODO: redict to /concerts/id/seats where id is concert id
         return "redirect:/concerts";
     }
