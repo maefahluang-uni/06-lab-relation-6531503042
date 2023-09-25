@@ -73,11 +73,11 @@ public class ConcertController {
     @Transactional
     @GetMapping("/delete-concert/{id}")
     public String deleteConcert(@PathVariable long id) {
-        Concert concert = concertRepo.findById(id).get();
+        Concert concert = concertRepo.findById(id).orElse(null);
         // TODO: delete related seats
         seatRepo.deleteByConcertId(id);
         // TODO: delete concert from DB
-        concertRepository.deleteById(id);
+        concertRepo.deleteById(id);
         // TODO: redirect to /concerts list concerts
         return "redirect:/concerts";
     }
@@ -88,9 +88,9 @@ public class ConcertController {
         //TODO: find seats by concert id
         Seat seats = seatRepo.findById(id).get();
         //TODO: add found seats to model
-        model.addAttribute("seats", seatRepository.findById(id));
+        model.addAttribute("seats", seatRepo.findById(id));
         //TODO: find concert by id
-        Concert concert = concertRepository.findById(id).get();
+        Concert concert = concertRepo.findById(id).get();
         //TODO: define an empty seat
         Seat newseat = new Seat();
         //TODO: set concert to the empty seat
@@ -104,12 +104,12 @@ public class ConcertController {
     @PostMapping("/concert/{id}/seat")
     public String saveSeat(@ModelAttribute Seat newseat, @PathVariable Long id) {
         // TODO: find concert by id
-        Concert concert = concertRepository.findById(id).get();
+        Concert concert = concertRepo.findById(id).get();
         // TODO: set concert to the new seat
         newseat.setConcert(concert);
         // TODO: save new seat
         seatRepo.save(newseat);
         // TODO: redict to /concerts/id/seats where id is concert id
-        return "redirect:/concerts";
+        return "redirect:/concerts/" + id + "/seats";
     }
 }

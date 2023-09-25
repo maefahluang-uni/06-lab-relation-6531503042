@@ -23,24 +23,23 @@ public class Seat {
     private boolean booked;
 
 
-    public Seat(String string, String string2, boolean b, Concert concert2) {
+    public Seat(String number, String zone, boolean booked, Concert concert) {
         this.number = number;
         this.zone = zone;
         this.booked = booked;
         this.concert = concert;
     }
 
+    public Seat() {
+        // Default Constructor
+    }
 
     //TODO: add many-to-one relationship to concert with cascade type CascadeType.MERGE
     @ManyToOne(cascade = CascadeType.MERGE)
     private Concert concert;
 
-    public Seat() {
-        //Default Constructor
-    }
+    // Getter and Setter methods for all attributes
 
-
-    //TODO: add getters and setters
     public Long getId() {
         return id;
     }

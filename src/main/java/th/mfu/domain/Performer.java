@@ -1,27 +1,31 @@
 package th.mfu.domain;
 
 import javax.annotation.Generated;
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 @Entity
-@Table(name = "performer")
 public class Performer {
 
-
-
-    //TODO: add attributes and annotation for Id, GeneratedValue
-    // - id (Long)
-    // - name (String)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    //Create fields attributes id, name
     private Long id;
     private String name;
 
+    // Constructors, getters, and setters
 
+    public Performer() {
+        // Default constructor
+    }
 
+    public Performer(String name) {
+        this.name = name;
+    }
 
-    //TODO: add getters and setters
+    // Getter and Setter methods for all attributes
+
     public Long getId() {
         return id;
     }
